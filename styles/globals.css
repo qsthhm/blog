@@ -74,6 +74,7 @@
 }
 
 /* 如果目录为空则隐藏容器 */
-.toc-wrapper:has(.js-toc:empty) {
+.toc-wrapper:has(.js-toc:empty),
+.toc-wrapper:has(.js-toc-mobile:empty) {
   display: none;
 }

@@ -3,9 +3,8 @@ import tocbot from 'tocbot';
 
 export default function Toc() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [hasToc, setHasToc] = useState(false);
 
+  // tocbot 配置
   const tocbotOptions = {
     tocSelector: '.js-toc',
     contentSelector: '.js-toc-content',
@@ -23,56 +22,9 @@ export default function Toc() {
     disableTocScrollSync: true,
   };
 
-  // 检查目录内容的函数
-  const checkTocContent = () => {
-    const tocElement = document.querySelector('.js-toc');
-    const hasContent = tocElement && tocElement.children.length > 0;
-    setHasToc(hasContent);
-    return hasContent;
-  };
-
-  // 初始化和检查目录
   useEffect(() => {
-    setMounted(true);
-
-    // 初始化 tocbot
-    const initToc = () => {
-      tocbot.init(tocbotOptions);
-      
-      // 初始化后立即检查一次
-      if (!checkTocContent()) {
-        // 如果没有内容，设置一个观察器来监听内容变化
-        const observer = new MutationObserver((mutations, obs) => {
-          if (checkTocContent()) {
-            obs.disconnect(); // 如果找到内容就停止观察
-          }
-        });
-
-        // 观察 .js-toc-content 的变化
-        const contentElement = document.querySelector('.js-toc-content');
-        if (contentElement) {
-          observer.observe(contentElement, {
-            childList: true,
-            subtree: true
-          });
-        }
-
-        // 60秒后停止观察
-        setTimeout(() => observer.disconnect(), 60000);
-      }
-    };
-
-    // 确保内容加载后再初始化
-    if (document.readyState === 'complete') {
-      initToc();
-    } else {
-      window.addEventListener('load', initToc);
-    }
-
-    return () => {
-      tocbot.destroy();
-      window.removeEventListener('load', initToc);
-    };
+    tocbot.init(tocbotOptions);
+    return () => tocbot.destroy();
   }, []);
 
   useEffect(() => {
@@ -98,8 +50,6 @@ export default function Toc() {
     };
   }, [isOpen]);
 
-  if (!mounted) return null;
-
   return (
     <>
       {/* 桌面端目录 */}
@@ -112,30 +62,28 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录按钮 */}
-      {hasToc && (
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="toc-wrapper xl:hidden fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
-          aria-label="打开目录"
+      {/* 移动端目录按钮 - 修改位置和图标 */}
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="toc-wrapper xl:hidden fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
+        aria-label="打开目录"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-            />
-          </svg>
-        </button>
-      )}
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+      </button>
 
-      {/* 移动端目录面板 */}
+      {/* 移动端目录面板 - 修改最小高度和字号 */}
       {isOpen && (
         <div className="toc-wrapper xl:hidden fixed inset-0 z-[100]">
           <div 
