@@ -50,40 +50,59 @@ export default function Projects({ initialData, description }) {
           <ProjectSkeleton />
         ) : (
           <div className="space-y-0">
-            {projects.map((project) => (
-              <article key={project.id} className="flex flex-row-reverse gap-6 py-8">
-                <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg">
-                  {/* 修改这里：用 img 替换 Image 组件 */}
-                  <img
-                    src={project.thumbnail || '/img/default.webp'}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="flex-grow py-1 space-y-3">
-                  <h2 className="text-xl font-medium text-neutral-900 dark:text-neutral-100">
-                    {project.title}
-                  </h2>
-                  <p className="text-base text-neutral-500 dark:text-neutral-500">
-                    {project.description}
-                  </p>
-                  
-                  {project.tags?.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.map((tag, index) => (
-                        <span
-                          key={index}
-                          className="px-1.5 py-0.5 text-xs bg-neutral-100 dark:bg-neutral-800 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+            {projects.map((project) => {
+              const ProjectWrapper = project.link ? 
+                ({ children }) => (
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
+                  >
+                    {children}
+                  </a>
+                ) : 
+                ({ children }) => <>{children}</>;
+
+              return (
+                <ProjectWrapper key={project.id}>
+                  <article className="flex flex-row-reverse gap-6 py-8">
+                    <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
+                      <img
+                        src={project.thumbnail || '/img/default.webp'}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-opacity duration-300"
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={e => e.target.classList.add('opacity-100')}
+                        style={{ opacity: 0 }}
+                      />
                     </div>
-                  )}
-                </div>
-              </article>
-            ))}
+                    <div className="flex-grow py-1 space-y-3">
+                      <h2 className="text-xl font-medium text-neutral-900 dark:text-neutral-100">
+                        {project.title}
+                      </h2>
+                      <p className="text-base text-neutral-500 dark:text-neutral-400">
+                        {project.description}
+                      </p>
+                      
+                      {project.tags?.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tags.map((tag, index) => (
+                            <span
+                              key={index}
+                              className="px-1.5 py-0.5 text-xs bg-neutral-100 dark:bg-neutral-800 rounded text-neutral-600 dark:text-neutral-300"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </article>
+                </ProjectWrapper>
+              );
+            })}
           </div>
         )}
       </div>
@@ -91,7 +110,6 @@ export default function Projects({ initialData, description }) {
   )
 }
 
-// getStaticProps 保持不变...
 export async function getStaticProps() {
   try {
     const [projects, parameters] = await Promise.all([
@@ -106,7 +124,8 @@ export async function getStaticProps() {
       thumbnail: 
         project.properties?.['缩略图']?.files?.[0]?.file?.url || 
         project.properties?.['缩略图']?.files?.[0]?.external?.url || '',
-      tags: project.properties?.['标签']?.multi_select?.map(tag => tag.name) || []
+      tags: project.properties?.['标签']?.multi_select?.map(tag => tag.name) || [],
+      link: project.properties?.['链接']?.url || ''
     })) || []
 
     return {

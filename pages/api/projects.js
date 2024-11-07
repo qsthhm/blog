@@ -11,7 +11,8 @@ export default async function handler(req, res) {
       thumbnail: 
         project.properties?.['缩略图']?.files?.[0]?.file?.url || 
         project.properties?.['缩略图']?.files?.[0]?.external?.url || '',
-      tags: project.properties?.['标签']?.multi_select?.map(tag => tag.name) || []
+      tags: project.properties?.['标签']?.multi_select?.map(tag => tag.name) || [],
+      link: project.properties?.['链接']?.url || ''
     })) || []
 
     res.status(200).json({ projects: projectsData })
