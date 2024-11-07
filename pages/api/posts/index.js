@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     const { page = 1 } = req.query
     const posts = await getDatabase(process.env.BLOG_DATABASE_ID)
     
-    const POSTS_PER_PAGE = 2
+    const POSTS_PER_PAGE = 10
     const totalPosts = posts.length
     const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
     

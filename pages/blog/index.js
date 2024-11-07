@@ -5,7 +5,7 @@ import BlogList from '../../components/BlogList'
 import { SITE_CONFIG } from '../../constants/site'
 import { getDatabase, getParameters } from '../api/notion'
 
-export const POSTS_PER_PAGE = 2
+export const POSTS_PER_PAGE = 10
 
 export default function Blog({ initialData, description }) {
   const { posts, totalPages, isLoading, isError } = usePosts(1, initialData)
