@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import tocbot from 'tocbot';
 
 export default function Toc() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const mobileTocRef = useRef(null);
 
   // tocbot 配置
   const tocbotOptions = {
@@ -22,6 +24,14 @@ export default function Toc() {
     disableTocScrollSync: true,
   };
 
+  // 检查目录内容是否为空
+  const checkTocEmpty = () => {
+    if (mobileTocRef.current) {
+      const tocContent = mobileTocRef.current.textContent || '';
+      setIsEmpty(!tocContent.trim());
+    }
+  };
+
   useEffect(() => {
     tocbot.init(tocbotOptions);
     return () => tocbot.destroy();
@@ -36,6 +46,8 @@ export default function Toc() {
           setIsOpen(false);
         },
       });
+      // 初始化完成后检查内容
+      setTimeout(checkTocEmpty, 100);
     }
   }, [isOpen]);
 
@@ -62,7 +74,7 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录按钮 - 修改位置和图标 */}
+      {/* 移动端目录按钮 */}
       <button 
         onClick={() => setIsOpen(true)}
         className="toc-wrapper xl:hidden fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
@@ -83,7 +95,7 @@ export default function Toc() {
         </svg>
       </button>
 
-      {/* 移动端目录面板 - 修改最小高度和字号 */}
+      {/* 移动端目录面板 */}
       {isOpen && (
         <div className="toc-wrapper xl:hidden fixed inset-0 z-[100]">
           <div 
@@ -115,7 +127,14 @@ export default function Toc() {
               </button>
             </div>
             <div className="p-4 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 65px)' }}>
-              <nav className="js-toc-mobile text-base"></nav>
+              <nav ref={mobileTocRef} className="js-toc-mobile text-base">
+                {/* 目录内容将由 tocbot 填充 */}
+              </nav>
+              {isEmpty && (
+                <div className="text-center text-neutral-500 dark:text-neutral-400 py-8">
+                  当前文章暂无目录
+                </div>
+              )}
             </div>
           </div>
         </div>
