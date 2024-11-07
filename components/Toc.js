@@ -3,6 +3,8 @@ import tocbot from 'tocbot';
 
 export default function Toc() {
   const [isOpen, setIsOpen] = useState(false);
+  // 添加一个state来跟踪是否有目录内容
+  const [hasToc, setHasToc] = useState(false);
 
   // tocbot 配置
   const tocbotOptions = {
@@ -24,6 +26,11 @@ export default function Toc() {
 
   useEffect(() => {
     tocbot.init(tocbotOptions);
+    
+    // 检查目录内容
+    const tocElement = document.querySelector('.js-toc');
+    setHasToc(tocElement && tocElement.children.length > 0);
+
     return () => tocbot.destroy();
   }, []);
 
@@ -50,6 +57,9 @@ export default function Toc() {
     };
   }, [isOpen]);
 
+  // 如果没有目录内容，直接返回 null
+  if (!hasToc) return null;
+
   return (
     <>
       {/* 桌面端目录 */}
@@ -62,7 +72,7 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录按钮 - 修改位置和图标 */}
+      {/* 移动端目录按钮 */}
       <button 
         onClick={() => setIsOpen(true)}
         className="toc-wrapper xl:hidden fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
@@ -83,7 +93,7 @@ export default function Toc() {
         </svg>
       </button>
 
-      {/* 移动端目录面板 - 修改最小高度和字号 */}
+      {/* 移动端目录面板 */}
       {isOpen && (
         <div className="toc-wrapper xl:hidden fixed inset-0 z-[100]">
           <div 
