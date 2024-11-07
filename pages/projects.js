@@ -9,7 +9,7 @@ function ProjectSkeleton() {
  return (
    <div className="space-y-12">
      {[1, 2, 3].map((i) => (
-       <div key={i} className="flex flex-row-reverse gap-6">
+       <div key={i} className="flex flex-row-reverse gap-6 rounded-lg">
          <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
          <div className="flex-grow py-1 space-y-3">
            <div className="h-6 bg-neutral-100 dark:bg-neutral-800 rounded animate-pulse w-2/3" />
@@ -102,10 +102,10 @@ export default function Projects({ initialData, description }) {
                    target="_blank" 
                    rel="noopener noreferrer"
                    onClick={(e) => handleProjectClick(e, project.link)}
-                   className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
+                   className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:shadow-[0_0_0_10px_rgb(250,250,250)] dark:hover:shadow-[0_0_0_10px_rgb(38,38,38,0.5)] transition-all rounded-lg"
                  >
                    {children}
-                   <div className="hidden md:group-hover:flex items-center absolute bottom-4 left-0 text-xs bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded px-1.5 py-0.5 text-neutral-600 dark:text-neutral-300">
+                   <div className="hidden md:group-hover:flex items-center absolute bottom-4 left-0 text-xs bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-full px-1.5 py-0.5 text-neutral-600 dark:text-neutral-300">
                      <svg
                        className="w-3 h-3 mr-1"
                        fill="none"
@@ -123,11 +123,11 @@ export default function Projects({ initialData, description }) {
                    </div>
                  </a>
                ) : 
-               ({ children }) => <>{children}</>;
+               ({ children }) => <div className="rounded-lg">{children}</div>;
 
              return (
                <ProjectWrapper key={project.id}>
-                 <article className="flex flex-row-reverse gap-6">
+                 <article className="flex flex-row-reverse gap-6 rounded-lg">
                    <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
                      <img
                        src={project.thumbnail || '/img/default.webp'}
