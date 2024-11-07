@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-gray-900 bg-gray-50;
+  }
+}
+
+
+/* 覆盖 react-medium-image-zoom 的默认样式 */
+[data-rmiz-modal-overlay] {
+  @apply bg-white dark:bg-neutral-900 !important;
+}
+
+[data-rmiz-modal-img] {
+  transition: transform 300ms ease-in-out !important;
+}
+
+/* 设置字体大小为0来移除间距 */
+.font-0 {
+  font-size: 0;
+}
+
+.leading-0 {
+  line-height: 0;
+}
+
+
+/* Tocbot 自定义样式 */
+.toc-list {
+  @apply list-none p-0;
+}
+
+.toc-list-item {
+  @apply mb-2 relative;
+}
+
+.toc-list .toc-list {
+  @apply pl-3 mt-2 ml-0.5;
+}
+
+.toc-link {
+  @apply text-neutral-500 dark:text-neutral-400 no-underline 
+         hover:text-neutral-900 dark:hover:text-neutral-100 
+         transition-colors block py-1 px-2 rounded-md;
+}
+
+.is-active-link {
+  @apply text-neutral-900 dark:text-neutral-100 font-medium
+         bg-neutral-100 dark:bg-neutral-800;
+}
+
+/* 移除左边框指示器 */
+.is-active-link::before {
+  content: none;
+}
+
+/* 滚动条样式 */
+.js-toc::-webkit-scrollbar,
+.js-toc-mobile::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+.js-toc::-webkit-scrollbar-track,
+.js-toc-mobile::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.js-toc::-webkit-scrollbar-thumb,
+.js-toc-mobile::-webkit-scrollbar-thumb {
+  @apply bg-neutral-200 dark:bg-neutral-700 rounded-full;
+}
+
+/* 如果目录为空则隐藏容器 */
+.toc-wrapper:has(.js-toc:empty) {
+  display: none;
+}

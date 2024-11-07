@@ -1,0 +1,25 @@
+{
+  "name": "my-blog",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@notionhq/client": "latest",
+    "next": "latest",
+    "swr": "latest",
+    "next-themes": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-medium-image-zoom": "latest",
+    "@tailwindcss/typography": "latest",
+    "@tailwindcss/line-clamp": "latest",
+    "tailwindcss": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tocbot": "latest"
+  }
+}
