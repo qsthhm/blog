@@ -7,9 +7,9 @@ import { getDatabase, getParameters } from './api/notion'
 // 项目卡片骨架屏
 function ProjectSkeleton() {
  return (
-   <div className="space-y-6">
+   <div className="space-y-8">
      {[1, 2, 3].map((i) => (
-       <div key={i} className="flex flex-row-reverse gap-6 py-4">
+       <div key={i} className="flex flex-row-reverse gap-6">
          <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
          <div className="flex-grow py-1 space-y-3">
            <div className="h-6 bg-neutral-100 dark:bg-neutral-800 rounded animate-pulse w-2/3" />
@@ -93,7 +93,7 @@ export default function Projects({ initialData, description }) {
        {isLoading ? (
          <ProjectSkeleton />
        ) : (
-         <div className="space-y-6">
+         <div className="space-y-8">
            {projects.map((project) => {
              const ProjectWrapper = project.link ? 
                ({ children }) => (
@@ -105,7 +105,7 @@ export default function Projects({ initialData, description }) {
                    className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
                  >
                    {children}
-                   <div className="hidden md:group-hover:flex items-center absolute top-4 right-4 text-sm text-neutral-500 dark:text-neutral-400">
+                   <div className="hidden md:group-hover:flex items-center absolute bottom-4 left-0 text-sm text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-full py-1 px-3">
                      <svg
                        className="w-4 h-4 mr-1"
                        fill="none"
@@ -127,7 +127,7 @@ export default function Projects({ initialData, description }) {
 
              return (
                <ProjectWrapper key={project.id}>
-                 <article className="flex flex-row-reverse gap-6 py-4">
+                 <article className="flex flex-row-reverse gap-6">
                    <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800">
                      <img
                        src={project.thumbnail || '/img/default.webp'}
