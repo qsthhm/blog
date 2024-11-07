@@ -1,5 +1,3 @@
-
-
 import { useProjects } from '../lib/swr'
 import Head from 'next/head'
 import { useState, useCallback } from 'react'
@@ -45,18 +43,18 @@ function MobileConfirmDialog({ url, onClose }) {
           >
             取消
           </button>
-
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={onClose}
-          className="px-4 py-2 text-sm text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
+          
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onClose}
+            className="px-4 py-2 text-sm text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
-          确定前往
-        </a>
+            确定前往
+          </a>
+        </div>
       </div>
     </div>
-    </div >
   );
 }
 
@@ -97,34 +95,34 @@ export default function Projects({ initialData, description }) {
         ) : (
           <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
             {projects.map((project) => {
-              const ProjectWrapper = project.link ?
+              const ProjectWrapper = project.link ? 
                 ({ children }) => (
-                  <a
-                    href={project.link}
-                    target="_blank"
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
                     rel="noopener noreferrer"
                     onClick={(e) => handleProjectClick(e, project.link)}
                     className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
                   >
                     {children}
                     <div className="hidden md:group-hover:flex items-center absolute top-4 right-4 text-sm text-neutral-500 dark:text-neutral-400">
-                      <svg
-                        className="w-4 h-4 mr-1"
+                      <svg 
+                        className="w-4 h-4 mr-1" 
+                        viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
                       </svg>
                       打开 {project.link}
                     </div>
                   </a>
-                ) :
+                ) : 
                 ({ children }) => <>{children}</>;
 
               return (
@@ -147,7 +145,7 @@ export default function Projects({ initialData, description }) {
                       <p className="text-base text-neutral-500 dark:text-neutral-400">
                         {project.description}
                       </p>
-
+                      
                       {project.tags?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
                           {project.tags.map((tag, index) => (
@@ -170,7 +168,7 @@ export default function Projects({ initialData, description }) {
       </div>
 
       {confirmUrl && (
-        <MobileConfirmDialog
+        <MobileConfirmDialog 
           url={confirmUrl}
           onClose={() => setConfirmUrl(null)}
         />
@@ -190,8 +188,8 @@ export async function getStaticProps() {
       id: project.id,
       title: project.properties?.['名称']?.title?.[0]?.plain_text || '',
       description: project.properties?.['描述']?.rich_text?.[0]?.plain_text || '',
-      thumbnail:
-        project.properties?.['缩略图']?.files?.[0]?.file?.url ||
+      thumbnail: 
+        project.properties?.['缩略图']?.files?.[0]?.file?.url || 
         project.properties?.['缩略图']?.files?.[0]?.external?.url || '',
       tags: project.properties?.['标签']?.multi_select?.map(tag => tag.name) || [],
       link: project.properties?.['链接']?.url || ''
