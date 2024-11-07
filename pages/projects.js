@@ -43,15 +43,15 @@ function MobileConfirmDialog({ url, onClose }) {
           >
             取消
           </button>
-          
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onClose}
+          <button
+            onClick={() => {
+              window.open(url, '_blank');
+              onClose();
+            }}
             className="px-4 py-2 text-sm text-white bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
             确定前往
-          </a>
+          </button>
         </div>
       </div>
     </div>
