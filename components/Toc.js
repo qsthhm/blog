@@ -3,7 +3,6 @@ import tocbot from 'tocbot';
 
 export default function Toc() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   // tocbot 配置
   const tocbotOptions = {
@@ -24,7 +23,6 @@ export default function Toc() {
   };
 
   useEffect(() => {
-    setMounted(true);
     tocbot.init(tocbotOptions);
     return () => tocbot.destroy();
   }, []);
@@ -52,8 +50,6 @@ export default function Toc() {
     };
   }, [isOpen]);
 
-  if (!mounted) return null;
-
   return (
     <>
       {/* 桌面端目录 */}
@@ -66,8 +62,10 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录组件 - 按钮和面板的容器 */}
+      {/* 移动端目录组件 */}
       <div className="toc-wrapper xl:hidden">
+        <nav className="js-toc-mobile hidden"></nav>
+        
         {/* 移动端目录按钮 */}
         <button 
           onClick={() => setIsOpen(true)}
