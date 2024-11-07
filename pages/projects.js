@@ -71,11 +71,10 @@ export default function Projects({ initialData, description }) {
                       <img
                         src={project.thumbnail || '/img/default.webp'}
                         alt={project.title}
-                        className="w-full h-full object-cover transition-opacity duration-300"
+                        className="w-full h-full object-cover opacity-0 transition-opacity duration-300"
                         loading="lazy"
                         decoding="async"
-                        onLoad={e => e.target.classList.add('opacity-100')}
-                        style={{ opacity: 0 }}
+                        onLoad={e => e.target.classList.remove('opacity-0')}
                       />
                     </div>
                     <div className="flex-grow py-1 space-y-3">
