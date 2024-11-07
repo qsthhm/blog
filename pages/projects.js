@@ -102,12 +102,9 @@ export default function Projects({ initialData, description }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => handleProjectClick(e, project.link)}
-                    className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
+                    className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
                   >
                     {children}
-                    <div className="hidden md:group-hover:flex items-center absolute top-4 right-4 text-sm text-neutral-500 dark:text-neutral-400">
-                      打开 {project.link}
-                    </div>
                   </a>
                 ) :
                 ({ children }) => <>{children}</>;
