@@ -96,34 +96,29 @@ export default function Projects({ initialData, description }) {
           <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
             {projects.map((project) => {
               const ProjectWrapper = project.link ? 
-                ({ children }) => (
-                  <a 
-                    href={project.link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={(e) => handleProjectClick(e, project.link)}
-                    className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
-                  >
-                    {children}
-                    <div className="hidden md:group-hover:flex items-center absolute top-4 right-4 text-sm text-neutral-500 dark:text-neutral-400">
-                      <svg 
-                        className="w-4 h-4 mr-1" 
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                      打开 {project.link}
-                    </div>
-                  </a>
-                ) : 
-                ({ children }) => <>{children}</>;
+              ({ children }) => (
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={(e) => handleProjectClick(e, project.link)}
+                  className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
+                >
+                  {children}
+                  <div className="hidden md:group-hover:flex items-center absolute top-4 right-4 text-sm text-neutral-500 dark:text-neutral-400">
+                    <svg 
+                      className="w-4 h-4 mr-1" 
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6v6m-11 5l12-12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    打开 {project.link}
+                  </div>
+                </a>
+              ) : 
+              ({ children }) => <>{children}</>;
 
               return (
                 <ProjectWrapper key={project.id}>
