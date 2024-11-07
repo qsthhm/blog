@@ -6,6 +6,7 @@ export default function Toc() {
 
   // tocbot 配置
   const tocbotOptions = {
+    tocSelector: '.js-toc',
     contentSelector: '.js-toc-content',
     headingSelector: 'h1, h2, h3',
     hasInnerContainers: true,
@@ -21,24 +22,11 @@ export default function Toc() {
     disableTocScrollSync: true,
   };
 
-  // 初始化两个目录
   useEffect(() => {
-    // 桌面端目录
-    tocbot.init({
-      ...tocbotOptions,
-      tocSelector: '.js-toc',
-    });
-
-    // 移动端目录
-    tocbot.init({
-      ...tocbotOptions,
-      tocSelector: '.js-toc-mobile',
-    });
-
+    tocbot.init(tocbotOptions);
     return () => tocbot.destroy();
   }, []);
 
-  // 打开移动端面板时重新初始化移动端目录
   useEffect(() => {
     if (isOpen) {
       tocbot.init({
@@ -74,70 +62,64 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录组件 */}
-      <div className="toc-wrapper xl:hidden">
-        {/* 移动端目录按钮 */}
-        <button 
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
-          aria-label="打开目录"
+      {/* 移动端目录按钮 - 修改位置和图标 */}
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="toc-wrapper xl:hidden fixed bottom-20 right-8 p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:shadow-lg text-neutral-600 dark:text-neutral-400 transition-all duration-300"
+        aria-label="打开目录"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-            />
-          </svg>
-        </button>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+      </button>
 
-        {/* 隐藏的导航元素用于检测目录是否为空 */}
-        <nav className="js-toc-mobile hidden"></nav>
-
-        {/* 移动端目录面板 */}
-        {isOpen && (
-          <div className="fixed inset-0 z-[100]">
-            <div 
-              className="absolute inset-0 bg-black bg-opacity-25 dark:bg-opacity-50 backdrop-blur-md"
-              onClick={() => setIsOpen(false)}
-            />
-            <div className="absolute bottom-0 inset-x-0 min-h-[320px] max-h-[80vh] bg-white dark:bg-neutral-900 rounded-t-2xl shadow-xl">
-              <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center">
-                <h2 className="text-base font-medium text-neutral-900 dark:text-neutral-100">
-                  目录
-                </h2>
-                <button 
-                  onClick={() => setIsOpen(false)}
-                  className="p-1 rounded-lg text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+      {/* 移动端目录面板 - 修改最小高度和字号 */}
+      {isOpen && (
+        <div className="toc-wrapper xl:hidden fixed inset-0 z-[100]">
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-25 dark:bg-opacity-50 backdrop-blur-md"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute bottom-0 inset-x-0 min-h-[320px] max-h-[80vh] bg-white dark:bg-neutral-900 rounded-t-2xl shadow-xl">
+            <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center">
+              <h2 className="text-base font-medium text-neutral-900 dark:text-neutral-100">
+                目录
+              </h2>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-1 rounded-lg text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+              >
+                <svg 
+                  className="w-5 h-5" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
                 >
-                  <svg 
-                    className="w-5 h-5" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M6 18L18 6M6 6l12 12" 
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="p-4 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 65px)' }}>
-                <nav className="js-toc-mobile text-base"></nav>
-              </div>
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M6 18L18 6M6 6l12 12" 
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 65px)' }}>
+              <nav className="js-toc-mobile text-base"></nav>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }
