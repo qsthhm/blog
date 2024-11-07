@@ -7,7 +7,7 @@ import { getDatabase, getParameters } from './api/notion'
 // 项目卡片骨架屏
 function ProjectSkeleton() {
  return (
-   <div className="space-y-8">
+   <div className="space-y-12">
      {[1, 2, 3].map((i) => (
        <div key={i} className="flex flex-row-reverse gap-6">
          <div className="relative aspect-square w-32 md:w-[152px] shrink-0 overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
@@ -81,7 +81,7 @@ export default function Projects({ initialData, description }) {
      </Head>
 
      <div className="mt-nav">
-       <div className="py-8">
+       <div className="pt-8 pb-16">
          <h1 className="text-page-title font-semibold mb-3 text-neutral-900 dark:text-neutral-100">
            项目
          </h1>
@@ -93,7 +93,7 @@ export default function Projects({ initialData, description }) {
        {isLoading ? (
          <ProjectSkeleton />
        ) : (
-         <div className="space-y-8">
+         <div className="space-y-12">
            {projects.map((project) => {
              const ProjectWrapper = project.link ? 
                ({ children }) => (
@@ -105,9 +105,9 @@ export default function Projects({ initialData, description }) {
                    className="group block hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors relative"
                  >
                    {children}
-                   <div className="hidden md:group-hover:flex items-center absolute bottom-4 left-0 text-sm text-neutral-500 dark:text-neutral-400 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-full py-1 px-3">
+                   <div className="hidden md:group-hover:flex items-center absolute bottom-4 left-0 text-xs bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded px-1.5 py-0.5 text-neutral-600 dark:text-neutral-300">
                      <svg
-                       className="w-4 h-4 mr-1"
+                       className="w-3 h-3 mr-1"
                        fill="none"
                        viewBox="0 0 24 24"
                        stroke="currentColor"
