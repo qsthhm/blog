@@ -64,8 +64,6 @@ export default function Toc() {
 
       {/* 移动端目录组件 */}
       <div className="toc-wrapper xl:hidden">
-        <nav className="js-toc-mobile hidden"></nav>
-        
         {/* 移动端目录按钮 */}
         <button 
           onClick={() => setIsOpen(true)}
