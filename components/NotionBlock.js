@@ -5,17 +5,38 @@ import ZoomImage from './ZoomImage'
 function TextBlock({ text }) {
   if (!text) return null;
   
-  return text.map((value, i) => (
-    <span key={i} className={`
-      ${value.annotations.bold ? 'font-semibold text-neutral-900 dark:text-neutral-100' : ''}
-      ${value.annotations.italic ? 'italic' : ''}
-      ${value.annotations.strikethrough ? 'line-through' : ''}
-      ${value.annotations.underline ? 'underline' : ''}
-      ${value.annotations.code ? 'px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 font-mono text-sm rounded' : ''}
-    `}>
-      {value.plain_text}
-    </span>
-  ));
+  return text.map((value, i) => {
+    // 处理链接
+    const isLink = !!value.href;
+    const content = (
+      <span key={i} className={`
+        ${value.annotations.bold ? 'font-semibold text-neutral-900 dark:text-neutral-100' : ''}
+        ${value.annotations.italic ? 'italic' : ''}
+        ${value.annotations.strikethrough ? 'line-through' : ''}
+        ${value.annotations.underline ? 'underline' : ''}
+        ${value.annotations.code ? 'px-1.5 py-0.5 bg-neutral-100 dark:bg-neutral-800 font-mono text-sm rounded' : ''}
+      `}>
+        {value.plain_text}
+      </span>
+    );
+
+    // 如果是链接，则包装在 a 标签中
+    if (isLink) {
+      return (
+        <a 
+          key={i}
+          href={value.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {content}
+        </a>
+      );
+    }
+
+    return content;
+  });
 }
 
 function NotionImage({ url, caption }) {
