@@ -3,10 +3,9 @@ import tocbot from 'tocbot';
 
 export default function Toc() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);  // 添加mounted状态
-  const [hasToc, setHasToc] = useState(false);   // 保留hasToc状态
+  const [mounted, setMounted] = useState(false);
+  const [hasToc, setHasToc] = useState(false);
 
-  // tocbot 配置
   const tocbotOptions = {
     tocSelector: '.js-toc',
     contentSelector: '.js-toc-content',
@@ -24,21 +23,55 @@ export default function Toc() {
     disableTocScrollSync: true,
   };
 
-  // 初始化 tocbot
+  // 检查目录内容的函数
+  const checkTocContent = () => {
+    const tocElement = document.querySelector('.js-toc');
+    const hasContent = tocElement && tocElement.children.length > 0;
+    setHasToc(hasContent);
+    return hasContent;
+  };
+
+  // 初始化和检查目录
   useEffect(() => {
     setMounted(true);
-    
-    tocbot.init(tocbotOptions);
 
-    // 延迟检查目录内容
-    const timer = setTimeout(() => {
-      const tocElement = document.querySelector('.js-toc');
-      setHasToc(tocElement && tocElement.children.length > 0);
-    }, 1000); // 给一定的延迟等待内容加载
+    // 初始化 tocbot
+    const initToc = () => {
+      tocbot.init(tocbotOptions);
+      
+      // 初始化后立即检查一次
+      if (!checkTocContent()) {
+        // 如果没有内容，设置一个观察器来监听内容变化
+        const observer = new MutationObserver((mutations, obs) => {
+          if (checkTocContent()) {
+            obs.disconnect(); // 如果找到内容就停止观察
+          }
+        });
+
+        // 观察 .js-toc-content 的变化
+        const contentElement = document.querySelector('.js-toc-content');
+        if (contentElement) {
+          observer.observe(contentElement, {
+            childList: true,
+            subtree: true
+          });
+        }
+
+        // 60秒后停止观察
+        setTimeout(() => observer.disconnect(), 60000);
+      }
+    };
+
+    // 确保内容加载后再初始化
+    if (document.readyState === 'complete') {
+      initToc();
+    } else {
+      window.addEventListener('load', initToc);
+    }
 
     return () => {
       tocbot.destroy();
-      clearTimeout(timer);
+      window.removeEventListener('load', initToc);
     };
   }, []);
 
@@ -79,7 +112,7 @@ export default function Toc() {
         </div>
       </div>
 
-      {/* 移动端目录按钮 - 只在有目录内容时显示 */}
+      {/* 移动端目录按钮 */}
       {hasToc && (
         <button 
           onClick={() => setIsOpen(true)}
@@ -105,7 +138,38 @@ export default function Toc() {
       {/* 移动端目录面板 */}
       {isOpen && (
         <div className="toc-wrapper xl:hidden fixed inset-0 z-[100]">
-          {/* ... 其他代码保持不变 */}
+          <div 
+            className="absolute inset-0 bg-black bg-opacity-25 dark:bg-opacity-50 backdrop-blur-md"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute bottom-0 inset-x-0 min-h-[320px] max-h-[80vh] bg-white dark:bg-neutral-900 rounded-t-2xl shadow-xl">
+            <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center">
+              <h2 className="text-base font-medium text-neutral-900 dark:text-neutral-100">
+                目录
+              </h2>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-1 rounded-lg text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+              >
+                <svg 
+                  className="w-5 h-5" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M6 18L18 6M6 6l12 12" 
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 65px)' }}>
+              <nav className="js-toc-mobile text-base"></nav>
+            </div>
+          </div>
         </div>
       )}
     </>
