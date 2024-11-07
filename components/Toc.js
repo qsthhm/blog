@@ -64,9 +64,6 @@ export default function Toc() {
 
      {/* 移动端目录组件 */}
      <div className="toc-wrapper xl:hidden">
-       {/* 添加一个隐藏的导航元素用于检测目录是否为空 */}
-       <nav className="js-toc-mobile hidden"></nav>
-
        {/* 移动端目录按钮 */}
        <button 
          onClick={() => setIsOpen(true)}
@@ -89,7 +86,7 @@ export default function Toc() {
        </button>
 
        {/* 移动端目录面板 */}
-       {isOpen && (
+       {isOpen ? (
          <div className="fixed inset-0 z-[100]">
            <div 
              className="absolute inset-0 bg-black bg-opacity-25 dark:bg-opacity-50 backdrop-blur-md"
@@ -124,6 +121,9 @@ export default function Toc() {
              </div>
            </div>
          </div>
+       ) : (
+         // 隐藏的导航元素用于检测目录是否为空
+         <nav className="js-toc-mobile"></nav>
        )}
      </div>
    </>
